@@ -36,6 +36,28 @@ sudo pacman -S linux-headers base-devel git
 
 ## Installation
 
+### DKMS (recommended — survives kernel updates)
+
+With DKMS the module is automatically rebuilt whenever the kernel is updated,
+so you don't have to recompile by hand after every `apt upgrade`.
+
+```bash
+# Install dkms + build tools first
+sudo apt install dkms build-essential linux-headers-$(uname -r) git   # Debian/Ubuntu
+
+git clone https://github.com/Xanderful/aic8800d80.git
+cd aic8800d80
+sudo ./dkms-install.sh
+```
+
+This copies the source to `/usr/src/aic8800d80-<version>/`, installs the
+firmware and udev mode-switch rule, and registers the module with DKMS
+(`AUTOINSTALL=yes`). Then **unplug and replug** the adapter.
+
+Check it: `dkms status aic8800d80`. To remove everything: `sudo ./dkms-remove.sh`.
+
+### Manual (plain make)
+
 ```bash
 git clone https://github.com/Xanderful/aic8800d80.git
 cd aic8800d80
